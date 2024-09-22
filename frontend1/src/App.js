@@ -8,13 +8,22 @@ const App = () => {
   const [response, setResponse] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // Handle JSON input submission
-  const handleSubmit = async (jsonData) => {
+   const handleSubmit = async data => {
+    setJsonData(data);
     try {
-      const res = await axios.post('https://bajaj-backend-rust-ten.vercel.app', jsonData);
-      setResponse(res.data);
-    } catch (err) {
-      console.error('Error submitting the JSON data', err);
+      const response = await fetch(
+        "bajaj-production-a0ca.up.railway.app/api/bfhl",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+      const result = await response.json();
+      setResponse(result);
+    } catch (error) {
+      console.error("Error:", error);
+      setResponse({ error: "Failed to fetch data from the API." });
     }
   };
 
